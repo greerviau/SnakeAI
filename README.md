@@ -4,7 +4,7 @@
 ### Neural Network
 Each snake contains a neural network. The neural network has an input layer of 24 neurons, 2 hidden layers of 18 neurons, and one output layer of 4 neurons. 
 ### Vision
-The snake can see in 8 directions: UP, DOWN, LEFT, RIGHT, DIAGONALS. In each of these directions the snake looks for 3 things:
+The snake can see in 8 directions. In each of these directions the snake looks for 3 things:
 + Distance to food
 + Distance to its own body
 + Distance to a wall
