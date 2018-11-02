@@ -161,20 +161,6 @@ class Matrix {
        return max(0,x);
    }
    
-   float sigmoid(float x) {
-      return 1 / (1 + pow((float)Math.E, -x)); 
-   }
-   
-   Matrix sigmoidDerived() {
-      Matrix n = new Matrix(rows, cols);
-      for(int i = 0; i < rows; i++) {
-         for(int j = 0; j < cols; j++) {
-            n.matrix[i][j] = (matrix[i][j] * (1 - matrix[i][j])); 
-         }
-      }
-      return n;
-   }
-   
    Matrix removeBottomLayer() {
       Matrix n = new Matrix(rows-1, cols);
       for(int i = 0; i < n.rows; i++) {
