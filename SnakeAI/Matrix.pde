@@ -25,14 +25,6 @@ class Matrix {
       println();
    }
    
-   void multiply(float n) {
-      for(int i = 0; i < rows; i++) {
-         for(int j = 0; j < rows; j++) {
-            matrix[i][j] *= n; 
-         }
-      }
-   }
-   
    Matrix dot(Matrix n) {
      Matrix result = new Matrix(rows, n.cols);
      
@@ -58,74 +50,12 @@ class Matrix {
       }
    }
    
-   void Add(float n) {
-      for(int i = 0; i < rows; i++) {
-         for(int j = 0; j < cols; j++) {
-            matrix[i][j] += n; 
-         }
-      }
-   }
-   
-   Matrix add(Matrix n) { 
-      Matrix newMatrix = new Matrix(rows,cols);
-      if(cols == n.cols && rows == n.rows) {
-         for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
-               newMatrix.matrix[i][j] = matrix[i][j] + n.matrix[i][j]; 
-            }
-         }
-      }
-      return newMatrix;
-   }
-   
-   Matrix subtract(Matrix n) { 
-      Matrix newMatrix = new Matrix(rows,cols);
-      if(cols == n.cols && rows == n.rows) {
-         for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
-               newMatrix.matrix[i][j] = matrix[i][j] - n.matrix[i][j]; 
-            }
-         }
-      }
-      return newMatrix;
-   }
-   
-   Matrix multiply(Matrix n) { 
-      Matrix newMatrix = new Matrix(rows,cols);
-      if(cols == n.cols && rows == n.rows) {
-         for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
-               newMatrix.matrix[i][j] = matrix[i][j] * n.matrix[i][j]; 
-            }
-         }
-      }
-      return newMatrix;
-   }
-   
-   Matrix transpose() {
-      Matrix n = new Matrix(rows, cols);
-      for(int i = 0; i < rows; i++) {
-         for(int j = 0; j < cols; j++) {
-            n.matrix[j][i] = matrix[i][j]; 
-         }
-      }
-      return n;
-   }
-   
    Matrix singleColumnMatrixFromArray(float[] arr) {
       Matrix n = new Matrix(arr.length, 1);
       for(int i = 0; i < arr.length; i++) {
          n.matrix[i][0] = arr[i]; 
       }
       return n;
-   }
-   
-   void fromArray(float[] arr) {
-      for(int i = 0; i < rows; i++) {
-         for(int j = 0; j < cols; j++) {
-            matrix[i][j] = arr[j+i*cols]; 
-         }
-      }
    }
    
    float[] toArray() {
@@ -159,16 +89,6 @@ class Matrix {
    
    float relu(float x) {
        return max(0,x);
-   }
-   
-   Matrix removeBottomLayer() {
-      Matrix n = new Matrix(rows-1, cols);
-      for(int i = 0; i < n.rows; i++) {
-         for(int j = 0; j < cols; j++) {
-            n.matrix[i][j] = matrix[i][j]; 
-         }
-      }
-      return n;
    }
    
    void mutate(float mutationRate) {
