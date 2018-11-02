@@ -1,7 +1,7 @@
 # SnakeAI
 
 ## Download and Run
-To download and run you will need [Processing](https://processing.org/)
+To run the program you will need [Processing](https://processing.org/)
 
 ## Snake
 ### Neural Network
