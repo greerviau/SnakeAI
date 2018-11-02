@@ -1,9 +1,9 @@
 final int SIZE = 20;
 int highscore = 0;
 boolean humanPlaying = false;  //false for AI, true to play yourself
-boolean showBest = true;  //shows only the best of each generation
+boolean replayBest = true;  //shows only the best of each generation
 boolean seeVision = false;  //see the snakes vision
-float globalMutationRate = 0.01;
+float mutationRate = 0.01;
 PFont font;
 
 Snake snake;
@@ -52,7 +52,7 @@ void draw() {
     text("GEN : "+pop.gen,150,30);
     text("BEST FITNESS : "+pop.bestFitness,150,50);
     text("MOVES LEFT : "+pop.bestSnake.lifeLeft,150,70);
-    text("MUTATION RATE : "+globalMutationRate,150,90);
+    text("MUTATION RATE : "+mutationRate,150,90);
     textSize(18);
     fill(255,0,0);
     text("RED < 0",140,height-100);

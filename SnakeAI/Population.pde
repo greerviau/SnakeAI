@@ -43,7 +43,7 @@ class Population {
    }
    
    void show() {  //show either the best snake or all the snakes
-      if(showBest) {
+      if(replayBest) {
         bestSnake.show();
         bestSnake.brain.show(0,0,400,800,bestSnake.vision, bestSnake.decision);  //show the brain of the best snake
       } else {
@@ -66,12 +66,12 @@ class Population {
          bestFitness = max;
          bestSnake = snakes[maxIndex].cloneForReplay();
          samebest = 0;
-         globalMutationRate = 0.1;
+         mutationRate = 0.1;
        } else {
          bestSnake = bestSnake.cloneForReplay(); 
          samebest++;
          if(samebest > 3) {  //if the best snake has remained the same for 3 generations, raise the mutation rate
-            globalMutationRate *= 2; 
+            mutationRate *= 2; 
             samebest = 0;
          }
        }
@@ -79,10 +79,10 @@ class Population {
    
    Snake selectParent() {  //selects a random number in range of the fitnesssum and if a snake falls in that range then select it
       float rand = random(fitnessSum);
-      float runningSum = 0;
+      float summation = 0;
       for(int i = 0; i < snakes.length; i++) {
-         runningSum += snakes[i].fitness;
-         if(runningSum > rand) {
+         summation += snakes[i].fitness;
+         if(summation > rand) {
            return snakes[i];
          }
       }

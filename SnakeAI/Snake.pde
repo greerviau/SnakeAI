@@ -171,7 +171,7 @@ class Snake {
   }
   
   void mutate() {  //mutate the snakes brain
-     brain.mutate(globalMutationRate); 
+     brain.mutate(mutationRate); 
   }
   
   void calculateFitness() {  //calculate the fitness of the snake
