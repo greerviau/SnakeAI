@@ -17,7 +17,7 @@ void setup() {
   if(humanPlaying) {
     snake = new Snake();
   } else {
-    pop = new Population(1000);
+    pop = new Population(2000); //adjust size of population
   }
 }
 
