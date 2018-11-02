@@ -1,5 +1,6 @@
 final int SIZE = 20;
 int highscore = 0;
+int fps = 100;  //15 is ideal for self play, increasing for AI does not increase speed, snake still takes time to thin each move
 boolean humanPlaying = false;  //false for AI, true to play yourself
 boolean replayBest = true;  //shows only the best of each generation
 boolean seeVision = false;  //see the snakes vision
@@ -12,11 +13,11 @@ Population pop;
 void setup() {
   font = createFont("agencyfb-bold.ttf",32);
   size(1200,800);
-  frameRate(15);
+  frameRate(fps);
   if(humanPlaying) {
     snake = new Snake();
   } else {
-    pop = new Population(2000);
+    pop = new Population(1000);
   }
 }
 
