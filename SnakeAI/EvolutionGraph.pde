@@ -43,7 +43,7 @@ class EvolutionGraph extends PApplet {
          line(50,y,width,y);
          y-=ydif;
       }
-      strokeWeight(1);
+      strokeWeight(2);
       stroke(255,0,0);
       int score = 0;
       for(int i=0; i<pop.evolution.size(); i++) {

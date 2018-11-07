@@ -176,7 +176,7 @@ class Snake {
   
   void calculateFitness() {  //calculate the fitness of the snake
      if(score < 10) {
-        fitness = floor(lifetime * lifetime * floor(pow(2,floor(score)))); 
+        fitness = (lifetime * lifetime) * pow(2,score); 
      } else {
         fitness = lifetime * lifetime;
         fitness *= pow(2,10);

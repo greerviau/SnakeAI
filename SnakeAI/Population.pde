@@ -74,8 +74,8 @@ class Population {
        } else {
          bestSnake = bestSnake.cloneForReplay(); 
          samebest++;
-         if(samebest > 3) {  //if the best snake has remained the same for 3 generations, raise the mutation rate
-            mutationRate *= 2; 
+         if(samebest > 2) {  //if the best snake has remained the same for more than 3 generations, raise the mutation rate
+            mutationRate *= 2;
             samebest = 0;
          }
        }
