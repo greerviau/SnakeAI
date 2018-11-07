@@ -18,20 +18,24 @@ class NeuralNet {
   }
   
   void show(float x, float y, float w, float h, float[] vision, float[] decision) {
-     x = x + 50;
-     float ibuff = (h - (inNeurons*30))/2;
-     float hbuff = (h - (hNeurons*30))/2;
-     float obuff = (h - (oNeurons*30))/2;
+     float dif = h/inNeurons;
+     float space = dif/3;
+     float neuronsize = dif - space;
+     x = x + 10;
+     y = y + 5;
+     float ibuff = (h - (inNeurons*dif))/2;
+     float hbuff = (h - (hNeurons*dif))/2;
+     float obuff = (h - (oNeurons*dif))/2;
      float xbuff = (w - (4*15))/4;
      //INPUT TO FIRST HIDDEN LAYER
      for(int i = 0; i < w_hidden_in.rows; i++) {
-        for(int j = 0; j < w_hidden_in.cols; j++) {
+        for(int j = 0; j < w_hidden_in.cols-1; j++) {
           if(w_hidden_in.matrix[i][j] > 0) {
              stroke(0,0,255);
           } else {
              stroke(255,0,0); 
           }
-          line(x + 10, y + ibuff+10+(j*30), x + 10+xbuff, y + hbuff+10+(i*30));
+          line(x + neuronsize, y + ibuff+space+(j*dif), x +neuronsize+xbuff, y + hbuff+space+(i*dif));
         }
      }
      //HIDDEN LAYER TO HIDDEN LAYER
@@ -42,7 +46,7 @@ class NeuralNet {
           } else {
              stroke(255,0,0); 
           }
-          line(x + 10+xbuff, y + hbuff+10+(j*30), x + 10+xbuff*2, y + hbuff+10+(i*30));
+          line(x + neuronsize*2+xbuff, y + hbuff+space+(j*dif), x + neuronsize*3+xbuff*2, y + hbuff+space+(i*dif));
         }
      }
      //HIDDEN LAYER TO OUTPUT
@@ -53,12 +57,13 @@ class NeuralNet {
           } else {
              stroke(255,0,0); 
           }
-          line(x + 10+xbuff*2, y + hbuff+10+(j*30), x +10+xbuff*3, y + obuff+10+(i*30));
+          line(x + neuronsize*4+xbuff*2, y + hbuff+space+(j*dif), x+neuronsize*5+xbuff*2+xbuff/2, y + obuff+space+(i*dif));
         }
      }
      stroke(0);
      fill(255);
-     for(int i = 0; i < inNeurons+1; i++) { 
+     ellipseMode(LEFT);
+     for(int i = 0; i < inNeurons; i++) { 
         if(i != inNeurons) {
             if(vision[i] > 0) {
                fill(0,255,0); 
@@ -67,17 +72,17 @@ class NeuralNet {
             }
         }
         stroke(0);
-        ellipse(x,y+10+ibuff+(i*30),20,20);
+        ellipse(x,y+ibuff+(i*dif),neuronsize,neuronsize);
      }
      for(int i = 0; i < hNeurons; i++) {
         stroke(0);
         fill(255);
-        ellipse(x+10+xbuff,y+10+hbuff+(i*30),20,20); 
+        ellipse(x+neuronsize+xbuff,y+hbuff+(i*dif),neuronsize,neuronsize); 
      }
      for(int i = 0; i < hNeurons; i++) {
         stroke(0);
         fill(255);
-        ellipse(x+10+xbuff*2,y+10+hbuff+(i*30),20,20); 
+        ellipse(x+neuronsize*3+xbuff*2,y+hbuff+(i*dif),neuronsize,neuronsize); 
      }
      int maxindex = 0;
      for(int i = 1; i < decision.length; i++) {
@@ -92,15 +97,15 @@ class NeuralNet {
           fill(255);
         }
         stroke(0);
-        ellipse(x+15+xbuff*3,y+10+obuff+(i*30),20,20); 
+        ellipse(x+neuronsize*5+xbuff*2+xbuff/2,y+obuff+(i*dif),neuronsize,neuronsize); 
      }
      fill(255);
-     textSize(14);
+     textSize(dif/2);
      textAlign(LEFT);
-     text("UP",x+30+xbuff*3,y+obuff+15);
-     text("DOWN",x+30+xbuff*3,y+obuff+45);
-     text("LEFT",x+30+xbuff*3,y+obuff+75);
-     text("RIGHT",x+30+xbuff*3,y+obuff+105);
+     text("UP",x+5+neuronsize*6+xbuff*2+xbuff/2,y+obuff+dif/2);
+     text("DOWN",x+5+neuronsize*6+xbuff*2+xbuff/2,y+obuff+(dif/2)+dif);
+     text("LEFT",x+5+neuronsize*6+xbuff*2+xbuff/2,y+obuff+(dif/2)+2*dif);
+     text("RIGHT",x+5+neuronsize*6+xbuff*2+xbuff/2,y+obuff+(dif/2)+3*dif);
   }
   
   void mutate(float mr) {

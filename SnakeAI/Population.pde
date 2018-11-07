@@ -1,13 +1,16 @@
 class Population {
    
+   ArrayList<Integer> evolution;
    Snake[] snakes;
    Snake bestSnake;
-   float bestFitness;
-   float fitnessSum;
+   int bestSnakeScore = 0;
+   float bestFitness = 0;
+   float fitnessSum = 0;
    int gen = 0;
    int samebest = 0;
    
    Population(int size) {
+      evolution = new ArrayList<Integer>();
       snakes = new Snake[size]; 
       for(int i = 0; i < snakes.length; i++) {
          snakes[i] = new Snake(); 
@@ -65,8 +68,9 @@ class Population {
        if(max > bestFitness) {
          bestFitness = max;
          bestSnake = snakes[maxIndex].cloneForReplay();
+         bestSnakeScore = snakes[maxIndex].score;
          samebest = 0;
-         mutationRate = 0.1;
+         mutationRate = 0.01;
        } else {
          bestSnake = bestSnake.cloneForReplay(); 
          samebest++;
@@ -102,6 +106,7 @@ class Population {
          newSnakes[i] = child;
       }
       snakes = newSnakes.clone();
+      evolution.add(bestSnakeScore);
       gen+=1;
    }
    

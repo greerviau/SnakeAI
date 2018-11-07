@@ -6,13 +6,19 @@ boolean replayBest = true;  //shows only the best of each generation
 boolean seeVision = false;  //see the snakes vision
 float mutationRate = 0.01;
 PFont font;
+Button graphButton;
+EvolutionGraph graph;
 
 Snake snake;
 Population pop;
 
+public void settings() {
+  size(1200,800);
+}
+
 void setup() {
   font = createFont("agencyfb-bold.ttf",32);
-  size(1200,800);
+  graphButton = new Button(329,15,140,30,"Evolution Graph");
   frameRate(fps);
   if(humanPlaying) {
     snake = new Snake();
@@ -26,6 +32,7 @@ void draw() {
   noFill();
   stroke(255);
   line(400,0,400,height);
+  rectMode(CORNER);
   rect(400 + SIZE,SIZE,width-400-40,height-40);
   textAlign(CENTER);
   textFont(font);
@@ -48,24 +55,30 @@ void draw() {
         pop.show(); 
     }
     fill(150);
-    textSize(20);
+    textSize(30);
     textAlign(LEFT);
-    text("GEN : "+pop.gen,150,30);
-    text("BEST FITNESS : "+pop.bestFitness,150,50);
-    text("MOVES LEFT : "+pop.bestSnake.lifeLeft,150,70);
-    text("MUTATION RATE : "+mutationRate,150,90);
+    text("GEN : "+pop.gen,120,55);
+    //text("BEST FITNESS : "+pop.bestFitness,120,50);
+    //text("MOVES LEFT : "+pop.bestSnake.lifeLeft,120,70);
+    text("MUTATION RATE : "+mutationRate*100+"%",120,90);
     textSize(18);
     fill(255,0,0);
-    text("RED < 0",140,height-100);
+    text("RED < 0",120,height-80);
     fill(0,0,255);
-    text("BLUE > 0",220,height-100);
+    text("BLUE > 0",200,height-80);
     textSize(30);
     fill(150);
-    text("SCORE : "+pop.bestSnake.score,140,height-60);
-    text("HIGHSCORE : "+highscore,140,height-20);
-    
+    text("SCORE : "+pop.bestSnake.score,120,height-45);
+    text("HIGHSCORE : "+highscore,120,height-10);
+    graphButton.show();
   }
 
+}
+
+void mousePressed() {
+   if(graphButton.collide(mouseX,mouseY)) {
+       graph = new EvolutionGraph();
+   }
 }
 
 
