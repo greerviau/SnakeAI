@@ -28,3 +28,5 @@ When two snakes are selected for reproduction, what happens is that the snakes b
 
 
 ![snakeai-4](https://user-images.githubusercontent.com/36581610/47884972-3defd580-de09-11e8-9c30-a85c5cd41611.gif)
+
+![evolutiongraph](https://user-images.githubusercontent.com/36581610/48309296-025db580-e545-11e8-8f7d-29822a063292.PNG)
