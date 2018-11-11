@@ -3,8 +3,8 @@ int highscore = 0;
 int fps = 100;  //15 is ideal for self play, increasing for AI does not increase speed, snake still takes time to thin each move
 boolean humanPlaying = false;  //false for AI, true to play yourself
 boolean replayBest = true;  //shows only the best of each generation
-boolean seeVision = false;  //see the snakes vision
-float mutationRate = 0.01;
+boolean seeVision = true;  //see the snakes vision
+float mutationRate = 0.1;
 PFont font;
 Button graphButton;
 EvolutionGraph graph;

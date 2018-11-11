@@ -70,7 +70,7 @@ class Population {
          bestSnake = snakes[maxIndex].cloneForReplay();
          bestSnakeScore = snakes[maxIndex].score;
          samebest = 0;
-         mutationRate = 0.01;
+         mutationRate = 0.1;
        } else {
          bestSnake = bestSnake.cloneForReplay(); 
          samebest++;
