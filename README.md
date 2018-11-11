@@ -14,7 +14,7 @@ The snake can see in 8 directions. In each of these directions the snake looks f
 
 3 x 8 directions = 24 inputs. The 4 outputs are simply the directions the snake can move.
 
-
+![snakeai-1](https://user-images.githubusercontent.com/36581610/48309748-338eb380-e54e-11e8-95c5-2ada68a29d16.gif)
 
 ## Evolution
 ### Natural Selection
