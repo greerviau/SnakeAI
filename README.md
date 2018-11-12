@@ -14,7 +14,7 @@ The snake can see in 8 directions. In each of these directions the snake looks f
 
 3 x 8 directions = 24 inputs. The 4 outputs are simply the directions the snake can move.
 
-![snakeai-1](https://user-images.githubusercontent.com/36581610/48309748-338eb380-e54e-11e8-95c5-2ada68a29d16.gif)
+![snakeai-2](https://user-images.githubusercontent.com/36581610/48320169-713e1b80-e5e4-11e8-8770-9491a669f019.gif)
 
 ## Evolution
 ### Natural Selection
@@ -27,5 +27,5 @@ A snakes fitness is dependant on how long the snake stays alive as well as its s
 When two snakes are selected for reproduction, what happens is that the snakes brains are crossed with each other. What this means is that part of one parents brain is mixed with part of the second parents and the resulting brain is assigned to the child. After the crossover the brain is also mutated according to a mutation rate (initially set to 5%). The mutation rate determines how much of the brain will be randomly altered.
 
 
-![snakeai-4](https://user-images.githubusercontent.com/36581610/47884972-3defd580-de09-11e8-9c30-a85c5cd41611.gif)
+![snakeai-1](https://user-images.githubusercontent.com/36581610/48309748-338eb380-e54e-11e8-95c5-2ada68a29d16.gif)
 
