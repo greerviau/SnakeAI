@@ -1,6 +1,5 @@
 class Population {
    
-   ArrayList<Integer> evolution;
    Snake[] snakes;
    Snake bestSnake;
    int bestSnakeScore = 0;
@@ -10,7 +9,6 @@ class Population {
    int samebest = 0;
    
    Population(int size) {
-      evolution = new ArrayList<Integer>();
       snakes = new Snake[size]; 
       for(int i = 0; i < snakes.length; i++) {
          snakes[i] = new Snake(); 
@@ -69,15 +67,16 @@ class Population {
          bestFitness = max;
          bestSnake = snakes[maxIndex].cloneForReplay();
          bestSnakeScore = snakes[maxIndex].score;
-         samebest = 0;
-         mutationRate = 0.1;
+         //samebest = 0;
+         //mutationRate = defaultMutation;
        } else {
          bestSnake = bestSnake.cloneForReplay(); 
+         /*
          samebest++;
          if(samebest > 2) {  //if the best snake has remained the same for more than 3 generations, raise the mutation rate
             mutationRate *= 2;
             samebest = 0;
-         }
+         }*/
        }
    }
    

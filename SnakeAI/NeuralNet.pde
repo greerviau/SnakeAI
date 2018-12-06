@@ -151,4 +151,18 @@ class NeuralNet {
      
      return clone;
   }
+  
+  void load(float[][] w1, float[][] w2, float[][] w3) {
+      w_hidden_in = new Matrix(w1);
+      w_hidden_hidden = new Matrix(w2);
+      w_output_hidden = new Matrix(w3);
+  }
+  
+  Matrix[] pull() {
+     Matrix[] model = new Matrix[3];
+     model[0] = w_hidden_in;
+     model[1] = w_hidden_hidden;
+     model[2] = w_output_hidden;
+     return model;
+  }
 }
