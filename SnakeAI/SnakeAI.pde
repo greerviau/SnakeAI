@@ -1,7 +1,7 @@
 final int SIZE = 20;
 
 int highscore = 0;
-int fps = 100;  //15 is ideal for self play, increasing for AI does not increase speed, snake still takes time to thin each move
+int fps = 100;  //15 is ideal for self play, increasing for AI does not directly increase speed, speed is dependant on processing power
 boolean humanPlaying = false;  //false for AI, true to play yourself
 boolean replayBest = true;  //shows only the best of each generation
 boolean seeVision = false;  //see the snakes vision
@@ -75,12 +75,12 @@ void draw() {
       text("SCORE : "+pop.bestSnake.score,120,height-45);
       text("HIGHSCORE : "+highscore,120,height-15);
     } else {
-     model.look();
-     model.think();
-     model.move();
-     model.show();
-     model.brain.show(0,0,400,800,model.vision, model.decision);
-     if(model.dead) {
+      model.look();
+      model.think();
+      model.move();
+      model.show();
+      model.brain.show(0,0,400,800,model.vision, model.decision);
+      if(model.dead) {
         Snake newmodel = new Snake();
         newmodel.brain = model.brain.clone();
         model = newmodel;
@@ -137,6 +137,7 @@ void fileSelectedIn(File selection) {
        genscore = modelTable.getInt(g,"Graph");
     }
     modelLoaded = true;
+    humanPlaying = false;
     model = new Snake();
     model.brain.load(w1,w2,w3);
   }

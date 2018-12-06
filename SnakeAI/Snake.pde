@@ -90,8 +90,10 @@ class Snake {
   
   void move() {  //move the snake
      if(!dead){
-       lifetime++;
-       lifeLeft--;
+       if(!humanPlaying && !modelLoaded) {
+         lifetime++;
+         lifeLeft--;
+       }
        if(foodCollide(head.x,head.y)) {
           eat();
        }
@@ -109,7 +111,7 @@ class Snake {
   void eat() {  //eat food
     int len = body.size()-1;
     score++;
-    if(!humanPlaying) {
+    if(!humanPlaying && !modelLoaded) {
       if(lifeLeft < 500) {
         lifeLeft+=100;
       } else {
