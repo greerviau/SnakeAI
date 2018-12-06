@@ -14,6 +14,8 @@ ArrayList<Integer> evolution;
 Button graphButton;
 Button loadButton;
 Button saveButton;
+Button increaseMut;
+Button decreaseMut;
 EvolutionGraph graph;
 
 Snake snake;
@@ -30,6 +32,8 @@ void setup() {
   graphButton = new Button(349,15,100,30,"Graph");
   loadButton = new Button(249,15,100,30,"Load");
   saveButton = new Button(149,15,100,30,"Save");
+  increaseMut = new Button(340,85,20,20,"+");
+  decreaseMut = new Button(365,85,20,20,"-");
   frameRate(fps);
   if(humanPlaying) {
     snake = new Snake();
@@ -74,6 +78,8 @@ void draw() {
       text("MUTATION RATE : "+mutationRate*100+"%",120,95);
       text("SCORE : "+pop.bestSnake.score,120,height-45);
       text("HIGHSCORE : "+highscore,120,height-15);
+      increaseMut.show();
+      decreaseMut.show();
     } else {
       model.look();
       model.think();
@@ -196,6 +202,14 @@ void mousePressed() {
    }
    if(saveButton.collide(mouseX,mouseY)) {
        selectOutput("Save Snake Model", "fileSelectedOut");
+   }
+   if(increaseMut.collide(mouseX,mouseY)) {
+      mutationRate *= 2;
+      defaultmutation = mutationRate;
+   }
+   if(decreaseMut.collide(mouseX,mouseY)) {
+      mutationRate /= 2;
+      defaultmutation = mutationRate;
    }
 }
 
