@@ -32,6 +32,7 @@ When two snakes are selected for reproduction, what happens is that the snakes b
 ## Data Collection
 ### Graphing
 The graph represents the score of the best snake from each generations. In some generations the graph may dip bellow the previous, this is because even though the score may have been worse, some trait allowed the snake to live longer and gain a higher overall fitness.
+
 ![snakeai-graph](https://user-images.githubusercontent.com/36581610/50039099-48051680-fffa-11e8-875f-2cb5b0e26f70.PNG)
 
 ### Save & Load
