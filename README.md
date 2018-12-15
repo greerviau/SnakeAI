@@ -14,7 +14,7 @@ The snake can see in 8 directions. In each of these directions the snake looks f
 
 3 x 8 directions = 24 inputs. The 4 outputs are simply the directions the snake can move.
 
-![snakeai-2](https://user-images.githubusercontent.com/36581610/48320169-713e1b80-e5e4-11e8-8770-9491a669f019.gif)
+![snakeai-1](https://user-images.githubusercontent.com/36581610/50039309-52291400-fffe-11e8-8b57-2344ba92ddc3.gif)
 
 ## Evolution
 ### Natural Selection
@@ -27,5 +27,12 @@ A snakes fitness is dependant on how long the snake stays alive as well as its s
 When two snakes are selected for reproduction, what happens is that the snakes brains are crossed with each other. What this means is that part of one parents brain is mixed with part of the second parents and the resulting brain is assigned to the child. After the crossover the brain is also mutated according to a mutation rate. The mutation rate determines how much of the brain will be randomly altered.
 
 
-![snakeai-1](https://user-images.githubusercontent.com/36581610/48309748-338eb380-e54e-11e8-95c5-2ada68a29d16.gif)
+![snakeai-2](https://user-images.githubusercontent.com/36581610/50039092-299f1b00-fffa-11e8-8e34-c67c1000fdf9.gif)
 
+## Data Collection
+### Graphing
+The graph represents the score of the best snake from each generations. In some generations the graph may dip bellow the previous, this is because even though the score may have been worse, some trait allowed the snake to live longer and gain a higher overall fitness.
+![snakeai-graph](https://user-images.githubusercontent.com/36581610/50039099-48051680-fffa-11e8-875f-2cb5b0e26f70.PNG)
+
+### Save & Load
+Models can be saved and loaded in order to test a model in new situations. The weights for each connection are saved in a CSV file. The evolution graph is also saved in order to view the evolution progress of the model.
