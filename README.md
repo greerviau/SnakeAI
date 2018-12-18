@@ -3,7 +3,7 @@
 ## Download and Run
 To run the program you will need [Processing](https://processing.org/)
 
-## [YouTube Video](https://www.youtube.com/watch?v=zIkBYwdkuTk&t)
+### [YouTube Video](https://www.youtube.com/watch?v=zIkBYwdkuTk&t)
 
 ## Snake
 ### Neural Network
