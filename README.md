@@ -3,6 +3,8 @@
 ## Download and Run
 To run the program you will need [Processing](https://processing.org/)
 
+## [YouTube Video](https://www.youtube.com/watch?v=zIkBYwdkuTk&t)
+
 ## Snake
 ### Neural Network
 Each snake contains a neural network. The neural network has an input layer of 24 neurons, 2 hidden layers of 18 neurons, and one output layer of 4 neurons. 
