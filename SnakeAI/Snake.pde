@@ -113,9 +113,11 @@ class Snake {
     score++;
     if(!humanPlaying && !modelLoaded) {
       if(lifeLeft < 500) {
-        lifeLeft+=100;
-      } else {
-        lifeLeft+=50;
+        if(lifeLeft > 400) {
+           lifeLeft = 500; 
+        } else {
+          lifeLeft+=100;
+        }
       }
     }
     if(len >= 0) {

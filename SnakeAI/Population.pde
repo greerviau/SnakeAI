@@ -46,7 +46,7 @@ class Population {
    void show() {  //show either the best snake or all the snakes
       if(replayBest) {
         bestSnake.show();
-        bestSnake.brain.show(0,0,400,800,bestSnake.vision, bestSnake.decision);  //show the brain of the best snake
+        bestSnake.brain.show(0,0,360,790,bestSnake.vision, bestSnake.decision);  //show the brain of the best snake
       } else {
          for(int i = 0; i < snakes.length; i++) {
             snakes[i].show(); 

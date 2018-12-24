@@ -4,7 +4,7 @@ int highscore = 0;
 int fps = 100;  //15 is ideal for self play, increasing for AI does not directly increase speed, speed is dependant on processing power
 boolean humanPlaying = false;  //false for AI, true to play yourself
 boolean replayBest = true;  //shows only the best of each generation
-boolean seeVision = false;  //see the snakes vision
+boolean seeVision = true;  //see the snakes vision
 boolean modelLoaded = false;
 float mutationRate = 0.05;
 float defaultmutation = mutationRate;
@@ -72,10 +72,10 @@ void draw() {
       fill(150);
       textSize(25);
       textAlign(LEFT);
-      text("GEN : "+pop.gen,120,65);
+      text("GEN : "+pop.gen,120,60);
       //text("BEST FITNESS : "+pop.bestFitness,120,50);
       //text("MOVES LEFT : "+pop.bestSnake.lifeLeft,120,70);
-      text("MUTATION RATE : "+mutationRate*100+"%",120,95);
+      text("MUTATION RATE : "+mutationRate*100+"%",120,90);
       text("SCORE : "+pop.bestSnake.score,120,height-45);
       text("HIGHSCORE : "+highscore,120,height-15);
       increaseMut.show();
@@ -100,9 +100,9 @@ void draw() {
     textAlign(LEFT);
     textSize(18);
     fill(255,0,0);
-    text("RED < 0",120,height-80);
+    text("RED < 0",120,height-75);
     fill(0,0,255);
-    text("BLUE > 0",200,height-80);
+    text("BLUE > 0",200,height-75);
     graphButton.show();
     loadButton.show();
     saveButton.show();
