@@ -82,6 +82,13 @@ class NeuralNet {
      float hBuff = (h - (space*(hNodes-1)) - (nSize*hNodes))/2;
      float oBuff = (h - (space*(oNodes-1)) - (nSize*oNodes))/2;
      
+     int maxIndex = 0;
+     for(int i = 1; i < decision.length; i++) {
+        if(decision[i] > decision[maxIndex]) {
+           maxIndex = i; 
+        }
+     }
+     
      //DRAW NODES
      for(int i = 0; i < iNodes; i++) {  //DRAW INPUTS
          if(vision[i] != 0) {
@@ -101,7 +108,7 @@ class NeuralNet {
          ellipse(x+(2*nSpace)+(2*nSize),y+hBuff+(i*(nSize+space)),nSize,nSize);
      }
      for(int i = 0; i < oNodes; i++) {  //DRAW OUTPUTS
-         if(decision[i] != 0) {
+         if(i == maxIndex) {
            fill(0,255,0);
          } else {
            fill(255); 
