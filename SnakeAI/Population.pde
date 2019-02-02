@@ -2,11 +2,13 @@ class Population {
    
    Snake[] snakes;
    Snake bestSnake;
+   
    int bestSnakeScore = 0;
-   float bestFitness = 0;
-   float fitnessSum = 0;
    int gen = 0;
    int samebest = 0;
+   
+   float bestFitness = 0;
+   float fitnessSum = 0;
    
    Population(int size) {
       snakes = new Snake[size]; 

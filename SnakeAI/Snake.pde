@@ -5,19 +5,28 @@ class Snake {
   int lifetime = 0;  //amount of time the snake has been alive
   int xVel, yVel;
   int foodItterate = 0;  //itterator to run through the foodlist (used for replay)
+  
   float fitness = 0;
+  
   boolean dead = false;
   boolean replay = false;  //if this snake is a replay of best snake
   
   float[] vision;  //snakes vision
   float[] decision;  //snakes decision
+  
   PVector head;
+  
   ArrayList<PVector> body;  //snakes body
   ArrayList<Food> foodList;  //list of food positions (used to replay the best snake)
+  
   Food food;
   NeuralNet brain;
   
   Snake() {
+    this(hidden_layers);
+  }
+  
+  Snake(int layers) {
     head = new PVector(800,height/2);
     food = new Food();
     body = new ArrayList<PVector>();
@@ -26,7 +35,7 @@ class Snake {
       decision = new float[4];
       foodList = new ArrayList<Food>();
       foodList.add(food.clone());
-      brain = new NeuralNet(24,18,4);
+      brain = new NeuralNet(24,hidden_nodes,4,layers);
       body.add(new PVector(800,(height/2)+SIZE));  
       body.add(new PVector(800,(height/2)+(2*SIZE)));
       score+=2;
@@ -163,13 +172,13 @@ class Snake {
   }
   
   Snake clone() {  //clone the snake
-     Snake clone = new Snake();
+     Snake clone = new Snake(hidden_layers);
      clone.brain = brain.clone();
      return clone;
   }
   
   Snake crossover(Snake parent) {  //crossover the snake with another snake
-     Snake child = new Snake();
+     Snake child = new Snake(hidden_layers);
      child.brain = brain.crossover(parent.brain);
      return child;
   }
@@ -235,7 +244,7 @@ class Snake {
     while (!wallCollide(pos.x,pos.y)) {
       if(!foodFound && foodCollide(pos.x,pos.y)) {
         foodFound = true;
-        look[0] = 1;
+        look[0] = 1/distance;
       }
       if(!bodyFound && bodyCollide(pos.x,pos.y)) {
          bodyFound = true;

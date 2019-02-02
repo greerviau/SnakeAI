@@ -1,25 +1,33 @@
 final int SIZE = 20;
+final int hidden_nodes = 16;
+final int hidden_layers = 2;
+final int fps = 100;  //15 is ideal for self play, increasing for AI does not directly increase speed, speed is dependant on processing power
 
 int highscore = 0;
-int fps = 100;  //15 is ideal for self play, increasing for AI does not directly increase speed, speed is dependant on processing power
+
+float mutationRate = 0.05;
+float defaultmutation = mutationRate;
+
 boolean humanPlaying = false;  //false for AI, true to play yourself
 boolean replayBest = true;  //shows only the best of each generation
 boolean seeVision = false;  //see the snakes vision
 boolean modelLoaded = false;
-float mutationRate = 0.05;
-float defaultmutation = mutationRate;
+
 PFont font;
 
 ArrayList<Integer> evolution;
+
 Button graphButton;
 Button loadButton;
 Button saveButton;
 Button increaseMut;
 Button decreaseMut;
+
 EvolutionGraph graph;
 
 Snake snake;
 Snake model;
+
 Population pop;
 
 public void settings() {
@@ -85,7 +93,7 @@ void draw() {
       model.think();
       model.move();
       model.show();
-      model.brain.show(0,0,400,800,model.vision, model.decision);
+      model.brain.show(0,0,360,790,model.vision, model.decision);
       if(model.dead) {
         Snake newmodel = new Snake();
         newmodel.brain = model.brain.clone();
@@ -116,24 +124,33 @@ void fileSelectedIn(File selection) {
   } else {
     String path = selection.getAbsolutePath();
     Table modelTable = loadTable(path,"header");
-    float[][] w1 = new float[18][25];
-    float[][] w2 = new float[18][19];
-    float[][] w3 = new float[4][19];
-    for(int i=0; i< 18; i++) {
+    Matrix[] weights = new Matrix[modelTable.getColumnCount()-1];
+    float[][] in = new float[hidden_nodes][25];
+    for(int i=0; i< hidden_nodes; i++) {
       for(int j=0; j< 25; j++) {
-        w1[i][j] = modelTable.getFloat(j+i*25,"In/H1");
+        in[i][j] = modelTable.getFloat(j+i*25,"L0");
       }  
     }
-    for(int i=0; i< 18; i++) {
-      for(int j=0; j< 19; j++) {
-        w2[i][j] = modelTable.getFloat(j+i*19,"H1/H2");
-      }  
+    weights[0] = new Matrix(in);
+    
+    for(int h=1; h<weights.length-1; h++) {
+       float[][] hid = new float[hidden_nodes][hidden_nodes+1];
+       for(int i=0; i< hidden_nodes; i++) {
+          for(int j=0; j< hidden_nodes+1; j++) {
+            hid[i][j] = modelTable.getFloat(j+i*(hidden_nodes+1),"L"+h);
+          }  
+       }
+       weights[h] = new Matrix(hid);
     }
+    
+    float[][] out = new float[4][hidden_nodes+1];
     for(int i=0; i< 4; i++) {
-      for(int j=0; j< 19; j++) {
-        w3[i][j] = modelTable.getFloat(j+i*19,"H2/Out");
+      for(int j=0; j< hidden_nodes+1; j++) {
+        out[i][j] = modelTable.getFloat(j+i*(hidden_nodes+1),"L"+(weights.length-1));
       }  
     }
+    weights[weights.length-1] = new Matrix(out);
+    
     evolution = new ArrayList<Integer>();
     int g = 0;
     int genscore = modelTable.getInt(g,"Graph");
@@ -144,8 +161,8 @@ void fileSelectedIn(File selection) {
     }
     modelLoaded = true;
     humanPlaying = false;
-    model = new Snake();
-    model.brain.load(w1,w2,w3);
+    model = new Snake(weights.length-1);
+    model.brain.load(weights);
   }
 }
 
@@ -155,37 +172,34 @@ void fileSelectedOut(File selection) {
   } else {
     String path = selection.getAbsolutePath();
     Table modelTable = new Table();
-    modelTable.addColumn("In/H1");
-    modelTable.addColumn("H1/H2");
-    modelTable.addColumn("H2/Out");
-    modelTable.addColumn("Graph");
     Snake modelToSave = pop.bestSnake.clone();
     Matrix[] modelWeights = modelToSave.brain.pull();
-    int w1i = 0;
-    int w2i = 0;
-    int w3i = 0;
+    float[][] weights = new float[modelWeights.length][];
+    for(int i=0; i<weights.length; i++) {
+       weights[i] = modelWeights[i].toArray(); 
+    }
+    for(int i=0; i<weights.length; i++) {
+       modelTable.addColumn("L"+i); 
+    }
+    modelTable.addColumn("Graph");
+    int maxLen = weights[0].length;
+    for(int i=1; i<weights.length; i++) {
+       if(weights[i].length > maxLen) {
+          maxLen = weights[i].length; 
+       }
+    }
     int g = 0;
-    float[] w1 = modelWeights[0].toArray();
-    float[] w2 = modelWeights[1].toArray();
-    float[] w3 = modelWeights[2].toArray();
-    int maxLen = max(w1.length,w2.length,w2.length);
     for(int i=0; i<maxLen; i++) {
        TableRow newRow = modelTable.addRow();
-       if(w1i < w1.length) {
-          newRow.setFloat("In/H1",w1[w1i]);
-          w1i++;
-       }
-       if(w2i < w2.length) {
-          newRow.setFloat("H1/H2",w2[w2i]);
-          w2i++;
-       }
-       if(w3i < w3.length) {
-          newRow.setFloat("H2/Out",w3[w3i]);
-          w3i++;
-       }
-       if(g < evolution.size()) {
-          newRow.setInt("Graph",evolution.get(g));
-          g++;
+       for(int j=0; j<weights.length+1; j++) {
+           if(j == weights.length) {
+             if(g < evolution.size()) {
+                newRow.setInt("Graph",evolution.get(g));
+                g++;
+             }
+           } else if(i < weights[j].length) {
+              newRow.setFloat("L"+j,weights[j][i]); 
+           }
        }
     }
     saveTable(modelTable, path);

@@ -1,84 +1,81 @@
 class NeuralNet {
   
-  int iNodes, hNodes, oNodes;
-  Matrix h_i_weights, h_h_weights, o_h_weights;
+  int iNodes, hNodes, oNodes, hLayers;
+  Matrix[] weights;
   
-  NeuralNet(int input, int hidden, int output) {
+  NeuralNet(int input, int hidden, int output, int hiddenLayers) {
     iNodes = input;
     hNodes = hidden;
     oNodes = output;
+    hLayers = hiddenLayers;
     
-    h_i_weights = new Matrix(hNodes, iNodes+1);
-    h_h_weights = new Matrix(hNodes, hNodes+1);
-    o_h_weights = new Matrix(oNodes, hNodes+1);
+    weights = new Matrix[hLayers+1];
+    weights[0] = new Matrix(hNodes, iNodes+1);
+    for(int i=1; i<hLayers; i++) {
+       weights[i] = new Matrix(hNodes,hNodes+1); 
+    }
+    weights[weights.length-1] = new Matrix(oNodes,hNodes+1);
     
-    h_i_weights.randomize();
-    h_h_weights.randomize();
-    o_h_weights.randomize();
+    for(Matrix w : weights) {
+       w.randomize(); 
+    }
   }
   
   void mutate(float mr) {
-     h_i_weights.mutate(mr);
-     h_h_weights.mutate(mr);
-     o_h_weights.mutate(mr);
+     for(Matrix w : weights) {
+        w.mutate(mr); 
+     }
   }
   
   float[] output(float[] inputsArr) {
-     Matrix inputs = o_h_weights.singleColumnMatrixFromArray(inputsArr);
+     Matrix inputs = weights[0].singleColumnMatrixFromArray(inputsArr);
      
-     Matrix ip_bias = inputs.addBias();
+     Matrix curr_bias = inputs.addBias();
      
-     Matrix hidden_ip = h_i_weights.dot(ip_bias);
+     for(int i=0; i<hLayers; i++) {
+        Matrix hidden_ip = weights[i].dot(curr_bias); 
+        Matrix hidden_op = hidden_ip.activate();
+        curr_bias = hidden_op.addBias();
+     }
      
-     Matrix hidden_op = hidden_ip.activate();
-     
-     Matrix hidden_op_bias = hidden_op.addBias();
-     
-     Matrix hidden_ip2 = h_h_weights.dot(hidden_op_bias);
-     Matrix hidden_op2 = hidden_ip2.activate();
-     Matrix hidden_op_bias2 = hidden_op2.addBias();
-     
-     Matrix output_ip = o_h_weights.dot(hidden_op_bias2);
+     Matrix output_ip = weights[weights.length-1].dot(curr_bias);
      Matrix output = output_ip.activate();
      
      return output.toArray();
   }
   
   NeuralNet crossover(NeuralNet partner) {
-     NeuralNet child = new NeuralNet(iNodes,hNodes,oNodes);
-     child.h_i_weights = h_i_weights.crossover(partner.h_i_weights);
-     child.h_h_weights = h_h_weights.crossover(partner.h_h_weights);
-     child.o_h_weights = o_h_weights.crossover(partner.o_h_weights);
+     NeuralNet child = new NeuralNet(iNodes,hNodes,oNodes,hLayers);
+     for(int i=0; i<weights.length; i++) {
+        child.weights[i] = weights[i].crossover(partner.weights[i]);
+     }
      return child;
   }
   
   NeuralNet clone() {
-     NeuralNet clone = new NeuralNet(iNodes, hNodes, oNodes);
-     clone.h_i_weights = h_i_weights.clone();
-     clone.h_h_weights = h_h_weights.clone();
-     clone.o_h_weights = o_h_weights.clone();
+     NeuralNet clone = new NeuralNet(iNodes,hNodes,oNodes,hLayers);
+     for(int i=0; i<weights.length; i++) {
+        clone.weights[i] = weights[i].clone(); 
+     }
      
      return clone;
   }
   
-  void load(float[][] w1, float[][] w2, float[][] w3) {
-      h_i_weights = new Matrix(w1);
-      h_h_weights = new Matrix(w2);
-      o_h_weights = new Matrix(w3);
+  void load(Matrix[] weight) {
+      for(int i=0; i<weights.length; i++) {
+         weights[i] = weight[i]; 
+      }
   }
   
   Matrix[] pull() {
-     Matrix[] model = new Matrix[3];
-     model[0] = h_i_weights;
-     model[1] = h_h_weights;
-     model[2] = o_h_weights;
+     Matrix[] model = weights.clone();
      return model;
   }
   
   void show(float x, float y, float w, float h, float[] vision, float[] decision) {
      float space = 5;
      float nSize = (h - (space*(iNodes-2))) / iNodes;
-     float nSpace = (w - (4*nSize)) / 3;
+     float nSpace = (w - (weights.length*nSize)) / weights.length;
      float hBuff = (h - (space*(hNodes-1)) - (nSize*hNodes))/2;
      float oBuff = (h - (space*(oNodes-1)) - (nSize*oNodes))/2;
      
@@ -88,6 +85,8 @@ class NeuralNet {
            maxIndex = i; 
         }
      }
+     
+     int lc = 0;  //Layer Count
      
      //DRAW NODES
      for(int i = 0; i < iNodes; i++) {  //DRAW INPUTS
@@ -99,14 +98,24 @@ class NeuralNet {
          stroke(0);
          ellipseMode(CORNER);
          ellipse(x,y+(i*(nSize+space)),nSize,nSize);
+         textSize(nSize/2);
+         textAlign(CENTER,CENTER);
+         fill(0);
+         text(i,x+(nSize/2),y+(nSize/2)+(i*(nSize+space)));
      }
-     for(int i = 0; i < hNodes; i++) {  //DRAW HIDDEN
-         fill(255);
-         stroke(0);
-         ellipseMode(CORNER);
-         ellipse(x+nSize+nSpace,y+hBuff+(i*(nSize+space)),nSize,nSize);
-         ellipse(x+(2*nSpace)+(2*nSize),y+hBuff+(i*(nSize+space)),nSize,nSize);
+     
+     lc++;
+     
+     for(int a = 0; a < hLayers; a++) {
+       for(int i = 0; i < hNodes; i++) {  //DRAW HIDDEN
+           fill(255);
+           stroke(0);
+           ellipseMode(CORNER);
+           ellipse(x+(lc*nSize)+(lc*nSpace),y+hBuff+(i*(nSize+space)),nSize,nSize);
+       }
+       lc++;
      }
+     
      for(int i = 0; i < oNodes; i++) {  //DRAW OUTPUTS
          if(i == maxIndex) {
            fill(0,255,0);
@@ -115,13 +124,15 @@ class NeuralNet {
          }
          stroke(0);
          ellipseMode(CORNER);
-         ellipse(x+(3*nSpace)+(3*nSize),y+oBuff+(i*(nSize+space)),nSize,nSize);
+         ellipse(x+(lc*nSpace)+(lc*nSize),y+oBuff+(i*(nSize+space)),nSize,nSize);
      }
      
+     lc = 1;
+     
      //DRAW WEIGHTS
-     for(int i = 0; i < h_i_weights.rows; i++) {  //INPUT TO HIDDEN
-        for(int j = 0; j < h_i_weights.cols-1; j++) {
-            if(h_i_weights.matrix[i][j] < 0) {
+     for(int i = 0; i < weights[0].rows; i++) {  //INPUT TO HIDDEN
+        for(int j = 0; j < weights[0].cols-1; j++) {
+            if(weights[0].matrix[i][j] < 0) {
                stroke(255,0,0); 
             } else {
                stroke(0,0,255); 
@@ -130,33 +141,39 @@ class NeuralNet {
         }
      }
      
-     for(int i = 0; i < h_h_weights.rows; i++) {  //HIDDEN TO HIDDEN
-        for(int j = 0; j < h_h_weights.cols-1; j++) {
-            if(h_h_weights.matrix[i][j] < 0) {
+     lc++;
+     
+     for(int a = 1; a < hLayers; a++) {
+       for(int i = 0; i < weights[a].rows; i++) {  //HIDDEN TO HIDDEN
+          for(int j = 0; j < weights[a].cols-1; j++) {
+              if(weights[a].matrix[i][j] < 0) {
+                 stroke(255,0,0); 
+              } else {
+                 stroke(0,0,255); 
+              }
+              line(x+(lc*nSize)+((lc-1)*nSpace),y+hBuff+(nSize/2)+(j*(space+nSize)),x+(lc*nSize)+(lc*nSpace),y+hBuff+(nSize/2)+(i*(space+nSize)));
+          }
+       }
+       lc++;
+     }
+     
+     for(int i = 0; i < weights[weights.length-1].rows; i++) {  //HIDDEN TO OUTPUT
+        for(int j = 0; j < weights[weights.length-1].cols-1; j++) {
+            if(weights[weights.length-1].matrix[i][j] < 0) {
                stroke(255,0,0); 
             } else {
                stroke(0,0,255); 
             }
-            line(x+(2*nSize)+nSpace,y+hBuff+(nSize/2)+(j*(space+nSize)),x+(2*nSize)+(2*nSpace),y+hBuff+(nSize/2)+(i*(space+nSize)));
+            line(x+(lc*nSize)+((lc-1)*nSpace),y+hBuff+(nSize/2)+(j*(space+nSize)),x+(lc*nSize)+(lc*nSpace),y+oBuff+(nSize/2)+(i*(space+nSize)));
         }
      }
      
-     for(int i = 0; i < o_h_weights.rows; i++) {  //HIDDEN TO OUTPUT
-        for(int j = 0; j < o_h_weights.cols-1; j++) {
-            if(o_h_weights.matrix[i][j] < 0) {
-               stroke(255,0,0); 
-            } else {
-               stroke(0,0,255); 
-            }
-            line(x+(3*nSize)+(2*nSpace),y+hBuff+(nSize/2)+(j*(space+nSize)),x+(3*nSize)+(3*nSpace),y+oBuff+(nSize/2)+(i*(space+nSize)));
-        }
-     }
-     fill(255);
+     fill(0);
      textSize(15);
-     textAlign(LEFT,CENTER);
-     text("UP",x+(4*nSize)+(3*nSpace)+5,y+oBuff+(nSize/2));
-     text("DOWN",x+(4*nSize)+(3*nSpace)+5,y+oBuff+space+nSize+(nSize/2));
-     text("LEFT",x+(4*nSize)+(3*nSpace)+5,y+oBuff+(2*space)+(2*nSize)+(nSize/2));
-     text("RIGHT",x+(4*nSize)+(3*nSpace)+5,y+oBuff+(3*space)+(3*nSize)+(nSize/2));
+     textAlign(CENTER,CENTER);
+     text("U",x+(lc*nSize)+(lc*nSpace)+nSize/2,y+oBuff+(nSize/2));
+     text("D",x+(lc*nSize)+(lc*nSpace)+nSize/2,y+oBuff+space+nSize+(nSize/2));
+     text("L",x+(lc*nSize)+(lc*nSpace)+nSize/2,y+oBuff+(2*space)+(2*nSize)+(nSize/2));
+     text("R",x+(lc*nSize)+(lc*nSpace)+nSize/2,y+oBuff+(3*space)+(3*nSize)+(nSize/2));
   }
 }
