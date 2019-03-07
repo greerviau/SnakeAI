@@ -244,11 +244,11 @@ class Snake {
     while (!wallCollide(pos.x,pos.y)) {
       if(!foodFound && foodCollide(pos.x,pos.y)) {
         foodFound = true;
-        look[0] = 1/distance;
+        look[0] = 1;
       }
       if(!bodyFound && bodyCollide(pos.x,pos.y)) {
          bodyFound = true;
-         look[1] = 1/distance;
+         look[1] = 1;
       }
       if(replay && seeVision) {
         stroke(0,255,0);
