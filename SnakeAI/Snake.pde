@@ -183,7 +183,7 @@ class Snake {
      return child;
   }
   
-  void mutate() {  //mutate the snakes brain
+  void mutate(float mutationRate) {  //mutate the snakes brain
      brain.mutate(mutationRate); 
   }
   
