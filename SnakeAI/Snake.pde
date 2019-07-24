@@ -87,6 +87,7 @@ class Snake {
      fill(255);
      stroke(0);
      for(int i = 0; i < body.size(); i++) {
+       fill(map(i, 0, body.size(), 224, 63));
        rect(body.get(i).x,body.get(i).y,SIZE,SIZE);
      }
      if(dead) {

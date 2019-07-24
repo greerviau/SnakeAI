@@ -152,13 +152,8 @@ void fileSelectedIn(File selection) {
     weights[weights.length-1] = new Matrix(out);
     
     evolution = new ArrayList<Integer>();
-    int g = 0;
-    int genscore = modelTable.getInt(g,"Graph");
-    while(genscore != 0) {
-       evolution.add(genscore);
-       g++;
-       genscore = modelTable.getInt(g,"Graph");
-    }
+    for (TableRow row : modelTable.rows())
+      evolution.add(row.getInt("Graph"));
     modelLoaded = true;
     humanPlaying = false;
     model = new Snake(weights.length-1);
