@@ -80,7 +80,7 @@ class NeuralNet {
      float oBuff = (h - (space*(oNodes-1)) - (nSize*oNodes))/2;
      
      int maxIndex = 0;
-     for(int i = 1; i < decision.length; i++) {
+     for(int i = 0; i < decision.length; i++) {
         if(decision[i] > decision[maxIndex]) {
            maxIndex = i; 
         }
