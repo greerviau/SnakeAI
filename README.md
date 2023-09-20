@@ -13,7 +13,7 @@ Note: Network can now be customized with the number of hidden layers as well as 
 The snake can see in 8 directions. In each of these directions the snake looks for 3 things:
 + Distance to food
 + Distance to its own body
-+ Distance to a wall
+i+ Distance to a wall
 
 3 x 8 directions = 24 inputs. The 4 outputs are simply the directions the snake can move.
 
